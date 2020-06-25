@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header h3">Data Curation Application</div>
+            <div class="card-body">
+                <form action="{% url 'upload' %}" method="POST" id="dForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="path" value="{{uploaded_file_url}}" />
+                    <input type="hidden" name="upload_flag" id="upload_flag" />
+                    <input type="hidden" name="funct" id="funct" />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile04"
+                                        aria-describedby="inputGroupFileAddon04" name="data_file" accept=".csv">
+                                    <label class="custom-file-label" for="inputGroupFile04">Choose File</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04"><i class="fa fa-upload"></i> <b>Submit</b></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                    <div class="row" style="margin-top:1em;">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Int 1</span>        
+                                </div>                    
+                                <select name="column1" class="form-control" >
+                                {% for item  in columnInt %}
+                                <option value="{{item}}" {% if item == col1 %} selected="selected" {% endif %}>{{item}}</option>
+                                {% endfor %}
+                                </select>              
+                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Float</span>        
+                                </div>                    
+                                <select name="column2" class="form-control" >
+                                {% for item  in columnFloat %}
+                                <option value="{{item}}" {% if item == col2 %} selected="selected" {% endif %}>{{item}}</option>
+                                {% endfor %}
+                                </select>              
+                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Object 1</span>        
+                                </div>                    
+                                <select name="column3" class="form-control" >
+                                {% for item  in columnObject %}
+                                <option value="{{item}}" {% if item == col3 %} selected="selected" {% endif %}>{{item}}</option>
+                                {% endfor %}
+                                </select>              
+                            </div> 
+                        </div>                
+                    </div>
+                    <div class="row" style="margin-top:1em;">               
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Int 2</span>        
+                                </div>                    
+                                <select name="column4" class="form-control" >
+                                {% for item  in columnInt %}
+                                <option value="{{item}}" {% if item == col4 %} selected="selected" {% endif %}>{{item}}</option>
+                                {% endfor %}
+                                </select>              
+                            </div> 
+                        </div>   
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Object 2</span>        
+                                </div>                    
+                                <select name="column5" class="form-control" >
+                                {% for item  in columnObject %}
+                                <option value="{{item}}" {% if item == col5 %} selected="selected" {% endif %}>{{item}}</option>
+                                {% endfor %}
+                                </select>              
+                            </div> 
+                        </div>             
+                    </div>         
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="col-md-3">
+                    <button class="btn btn-success" id="summary_btn">Summary</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:2em;">
+    <div class="col-md-4">
+        <button class="btn h3 btn-block btn-primary" id="comp_btn">Completenes {% if c_percent %} : <b>{{c_percent | floatformat:2}}</b>%{% endif %}</button>
+    </div>
+    <div class="col-md-4">
+        <button class="btn h3 btn-block btn-secondary" id="acc_btn">Numeric Accuracy {% if a_percent %}: <b>{{a_percent | floatformat:2}}</b>%{% endif %} </button>
+    </div>
+    <div class="col-md-4">
+        <button class="btn h3 btn-block btn-success" id="trad_btn">Overall Accuracy {% if t_percent %} : <b>{{t_percent | floatformat:2}}</b>%{% endif %} </button>
+    </div>
+</div>
+<div class="row"> 
+    <table class="table table-bordered">
+        <tr class="bg-secondary text-white">            
+        {% for item  in columns %}
+            {% if col1 %}
+                {% if item == col1 %}
+                    <th>{{item}}</th>
+                {% elif item == col2 %}
+                    <th>{{item}}</th>
+                {% elif item == col3 %}
+                    <th>{{item}}</th>
+                {% elif item == col4 %}
+                    <th>{{item}}</th>
+                {% elif item == col5 %}
+                    <th>{{item}}</th>
+                {% endif %}
+            {% else %}
+                <th>{{item}}</th>
+            {% endif %}
+        {% endfor %}        
+        </tr>  
+        {%  for row in data %}
+        <tr>
+            {% for key,val  in row.items %}  
+                {% if col1 %}
+                    {% if key == col1 %}
+                        <td>{{ val }}</td>
+                    {% elif key == col2 %}
+                        <td>{{ val }}</td>
+                    {% elif key == col3 %}
+                        <td>{{ val }}</td>
+                    {% elif key == col4 %}
+                        <td>{{ val }}</td>
+                    {% elif key == col5 %}
+                        <td>{{ val }}</td>
+                    {% endif %}
+                {% else %} 
+                    <td>{{ val }}</td> 
+                {% endif %}                          
+                           
+            {% endfor %}            
+        </tr>
+        {% endfor %}
+    </table>    
+</div>
+{% endblock %}

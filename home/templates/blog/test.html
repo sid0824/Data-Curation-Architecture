@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group ">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="inputGroupFile01"
+                aria-describedby="inputGroupFileAddon01"
+              />
+              <label class="custom-file-label" for="inputGroupFile01"
+                >Choose file</label
+              >
+            </div>
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="inputGroupFileAddon04"
+              >
+                Button
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:2em;">
+        <div class="col-md-4">
+          <button class="btn btn-primary">Completenes</button>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-secondary">Accuracy</button>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-success">Traciability</button>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table table-bordered">
+          {% for post in posts %}
+          <tr>
+            <td>{{post.budget}}</td>
+            <td>{{post.homepage}}</td>
+            <td>{{post.id}}</td>
+            <td>{{post.original_title}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
